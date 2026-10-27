@@ -5,7 +5,7 @@ import { txt } from './Juice';
 
 export type SideKind = 'slush' | 'tteok' | 'odeng';
 export const SIDE_ICON: Record<SideKind, string> = { slush: 'ui_slush', tteok: 'ui_tteok', odeng: 'ui_odeng' };
-export const SIDE_LABEL: Record<SideKind, string> = { slush: '슬러시', tteok: '떡볶이', odeng: '어묵' };
+export const SIDE_LABEL: Record<SideKind, string> = { slush: '자뭉슬러시', tteok: '포핀떡볶이', odeng: '오랭어묵' };
 
 export interface OrderSpec {
   /** 라면 그릇 수 (0 · 1 · 유도부원 2) — 여러 그릇이면 모두 같은 토핑 */

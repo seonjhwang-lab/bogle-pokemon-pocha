@@ -189,11 +189,11 @@ export const ODENG = { cook: 2500, sticks: 3 } as const;
 export const FEVER = { every: 5, ms: 8000, mult: 1.5 } as const;
 
 export const UPGRADES = {
-  burner: { name: '고화력 버너', desc: '물 끓는 시간 3초→2초\n면 익는 시간 단축', price: 400, icon: 'ui_flame_up' },
-  knife: { name: '명품 식칼', desc: '대파 썰기 3번 → 1번', price: 300, icon: 'ui_knife' },
-  autowash: { name: '자동 설거지 보조', desc: '3.5초마다 그릇 1개\n자동으로 닦아요', price: 600, icon: 'ui_autowash' },
-  arcade: { name: '문방구 미니 오락기', desc: '손님 인내심 25% 천천히\n8초마다 +15G', price: 600, icon: 'ui_arcade' },
-  tv: { name: '90년대 브라운관 TV', desc: '피버 타임 +3초\n모든 팁 +20%', price: 900, icon: 'ui_tv' },
+  burner: { name: '레츠고 고화력 버너', desc: '물 끓는 시간 3초→2초\n면 익는 시간 단축', price: 400, icon: 'ui_flame_up' },
+  knife: { name: '풀베기 명품 식칼', desc: '오랭열매 썰기 3번 → 1번', price: 300, icon: 'ui_knife' },
+  autowash: { name: '아쿠아제트 식기세척', desc: '3.5초마다 그릇 1개\n자동으로 닦아요', price: 600, icon: 'ui_autowash' },
+  arcade: { name: '피카츄 미니 오락기', desc: '손님 인내심 25% 천천히\n8초마다 +15G', price: 600, icon: 'ui_arcade' },
+  tv: { name: '로토무 브라운관 TV', desc: '피버 타임 +3초\n모든 팁 +20%', price: 900, icon: 'ui_tv' },
 } as const;
 export type UpgradeId = keyof typeof UPGRADES;
 
@@ -222,6 +222,6 @@ export const FONT = {
 
 export type Topping = 'egg' | 'scallion' | 'cheese';
 export const TOPPINGS: Topping[] = ['egg', 'scallion', 'cheese'];
-export const TOPPING_LABEL: Record<Topping, string> = { egg: '계란', scallion: '대파', cheese: '치즈' };
+export const TOPPING_LABEL: Record<Topping, string> = { egg: '모몬열매', scallion: '오랭열매', cheese: '튼튼치즈' };
 export const TOPPING_ICON: Record<Topping, string> = { egg: 'ui_egg', scallion: 'ui_scallion_cut', cheese: 'ui_cheese' };
 export const TOPPING_MINI: Record<Topping, string> = { egg: 'mini_egg', scallion: 'mini_scallion', cheese: 'mini_cheese' };

@@ -31,12 +31,12 @@ type Phase = 'story' | 'intro' | 'tutorial' | 'run' | 'end' | 'pause';
 
 const IDLE_TIPS: Record<string, string> = {
   d1: '냄비 탭 → 완성 냄비 탭 → 손님 탭',
-  d2: '재료 탭 → 냄비 탭 (끌어다 놓기도 OK)',
+  d2: '열매 탭 → 냄비 탭 (끌어다 놓기도 OK)',
   d3: '컵·철판도 탭해서 들고 → 손님 탭',
   d4: '그릇이 떨어지기 전에 싱크대를 탭!',
-  d5: '고양이가 오면 탭해서 쫓아내요!',
-  h1: '세트 주문! 철판을 미리 데워 두세요',
-  h2: '유도부원에겐 라면을 2번 서빙!',
+  d5: '로켓단 나옹이 오면 탭해서 쫓아내요!',
+  h1: '이브이즈 세트! 철판을 미리 데워 두세요',
+  h2: '잠만보에겐 라면을 2번 서빙!',
   endless: '하트 3개를 지켜라! 피버로 한방',
 };
 
@@ -165,7 +165,7 @@ export class GameScene extends Phaser.Scene {
       this.cat = new Cat(this, this.kitchen, sfx,
         (amount, what) => {
           if (what === 'gold') this.addRevenue(-amount, null);
-          this.hint(what === 'gold' ? '고양이가 매출을 훔쳐갔어요!' : '고양이가 썬 대파를 먹었어요!', CSS.red);
+          this.hint(what === 'gold' ? '나옹이 매출을 훔쳐갔어요!' : '나옹이 썬 오랭열매를 먹었어요!', CSS.red);
         },
         () => this.addRevenue(5, null));
     } else this.cat = null;
@@ -280,8 +280,8 @@ export class GameScene extends Phaser.Scene {
       if (stars >= 1) p.unlocked = Math.max(p.unlocked, Math.min(MAX_DAY, this.cfg.day + 1));
       const before = [p.h1Unlocked, p.h2Unlocked];
       Progress.refreshUnlocks();
-      if (!before[0] && p.h1Unlocked) news.push('히든 스테이지 「여고생 군단」 해금!');
-      if (!before[1] && p.h2Unlocked) news.push('히든 스테이지 「유도부 강습」 해금!');
+      if (!before[0] && p.h1Unlocked) news.push('히든 스테이지 「이브이즈 군단」 해금!');
+      if (!before[1] && p.h2Unlocked) news.push('히든 스테이지 「잠만보 대식가」 해금!');
     } else if (this.cfg.kind === 'hidden') {
       cleared = this.revenue >= this.cfg.stars[0];
       const key = this.cfg.id as 'h1' | 'h2';
@@ -354,8 +354,8 @@ export class GameScene extends Phaser.Scene {
     if (key === 'slush' && this.guideKey === 'slush') return;
     this.hintsShown.add(key);
     const text = key === 'slush-intro'
-      ? '새 기계: 슬러시!\n오른쪽 빨간 레버를\n아래로 당기세요\n깊이 당길수록 빨라요'
-      : '슬러시 주문!\n레버를 당기고\n게이지가 초록일 때\n손을 떼세요';
+      ? '새 기계: 자뭉슬러시!\n오른쪽 빨간 레버를\n아래로 당기세요\n깊이 당길수록 빨라요'
+      : '자뭉슬러시 주문!\n레버를 당기고\n게이지가 초록일 때\n손을 떼세요';
     this.tutorial.show({ swipe: { x: LV.x, y1: LV.top + 2, y2: LV.bottom }, text, at: LOW_LEFT, dim: false });
     this.guideKey = 'slush';
     this.guideUntil = this.time.now + (key === 'slush-intro' ? 6000 : 5000);
@@ -542,17 +542,17 @@ export class GameScene extends Phaser.Scene {
     if (sp.toppings.includes('scallion') && !this.kitchen.scallionReady) {
       this.guide('scallion', {
         finger: { x: STATION_POS.board.x + 28, y: STATION_POS.board.y + 22 },
-        text: `대파 주문! 도마를 ${this.kitchen.chopsNeeded}번 탭해\n썰어 두세요`, at: { x: 70, y: PREP_GUIDE_Y }, dim: false,
+        text: `오랭열매 주문! 도마를 ${this.kitchen.chopsNeeded}번 탭해\n썰어 두세요`, at: { x: 70, y: PREP_GUIDE_Y }, dim: false,
       });
     } else if (sp.toppings.includes('egg')) {
       this.guide('egg', {
         finger: { x: STATION_POS.egg.x + 28, y: STATION_POS.egg.y + 22 },
-        text: '면이 익는 동안\n1. 계란 바구니를 탭!\n2. 넣을 냄비를 탭!', at: { x: 100, y: PREP_GUIDE_Y - 12 }, dim: false,
+        text: '면이 익는 동안\n1. 모몬열매 바구니를 탭!\n2. 넣을 냄비를 탭!', at: { x: 100, y: PREP_GUIDE_Y - 12 }, dim: false,
       });
     } else if (sp.toppings.includes('cheese')) {
       this.guide('cheese', {
         finger: { x: STATION_POS.cheese.x + 28, y: STATION_POS.cheese.y + 22 },
-        text: '치즈 주문!\n1. 치즈 탭 → 2. 냄비 탭', at: { x: 150, y: PREP_GUIDE_Y }, dim: false,
+        text: '튼튼치즈 주문!\n1. 치즈 탭 → 2. 냄비 탭', at: { x: 150, y: PREP_GUIDE_Y }, dim: false,
       });
     }
     if (sp.slush) this.leverGuide();
@@ -561,14 +561,14 @@ export class GameScene extends Phaser.Scene {
     }
     if (sp.odeng && this.cfg.feat === 4 && this.front.odeng === OdengState.EMPTY) {
       this.guide('odeng', {
-        finger: { x: this.front.odengAt.x, y: this.front.odengAt.y }, text: '어묵 주문!\n빈 어묵탕을 탭하면\n꼬치 3개가 익어요 (2.5초)', at: { x: 176, y: TOP_GUIDE_Y }, dim: false,
+        finger: { x: this.front.odengAt.x, y: this.front.odengAt.y }, text: '오랭어묵 주문!\n빈 어묵탕을 탭하면\n꼬치 3개가 익어요 (2.5초)', at: { x: 176, y: TOP_GUIDE_Y }, dim: false,
       });
     }
   }
 
   private tteokServeGuide() {
     this.guide('tteok', {
-      finger: { x: this.front.tteokAt.x, y: this.front.tteokAt.y }, text: '떡볶이 주문!\n1. 윤기 나는 철판을 탭\n2. 떡볶이 손님을 탭', at: { x: 64, y: TOP_GUIDE_Y }, dim: false,
+      finger: { x: this.front.tteokAt.x, y: this.front.tteokAt.y }, text: '포핀 떡볶이 주문!\n1. 윤기 나는 철판을 탭\n2. 떡볶이 손님을 탭', at: { x: 64, y: TOP_GUIDE_Y }, dim: false,
     });
   }
 
@@ -638,17 +638,17 @@ export class GameScene extends Phaser.Scene {
       this.hintsShown.add('slush-intro');
     }
     if (name === 'slush-cup' && this.cfg.feat <= 3) {
-      this.guide('cup', { finger: { x: this.slush.cupAt.x, y: this.slush.cupAt.y }, text: '슬러시 완성!\n1. 완성된 컵을 탭하세요!\n2. 슬러시 손님을 탭!', at: LOW_LEFT, dim: false }, true);
+      this.guide('cup', { finger: { x: this.slush.cupAt.x, y: this.slush.cupAt.y }, text: '자뭉슬러시 완성!\n1. 완성된 컵을 탭하세요!\n2. 슬러시 손님을 탭!', at: LOW_LEFT, dim: false }, true);
     }
     if (name === 'tteok-ready' && this.cfg.feat === 3 && this.customers.anyWants('tteok')) this.tteokServeGuide();
     if (name === 'tteok-sticky') {
       this.guide('stir', {
         hswipe: { y: this.front.tteokAt.y + 2, x1: GRIDDLE_POS.x + 14, x2: GRIDDLE_POS.x + 46, label: '좌우로 문질러!' },
-        text: '떡볶이가 졸아붙어요!\n철판을 좌우로 문지르거나\n노란 국자 버튼을 탭해 저어요', at: { x: 120, y: TOP_GUIDE_Y }, dim: false,
+        text: '포핀 떡볶이가 졸아붙어요!\n철판을 좌우로 문지르거나\n노란 국자 버튼을 탭해 저어요', at: { x: 120, y: TOP_GUIDE_Y }, dim: false,
       }, true);
     }
     if (name === 'odeng-ready' && this.cfg.feat === 4) {
-      this.guide('odeng-serve', { finger: { x: this.front.odengAt.x, y: this.front.odengAt.y }, text: '어묵 완성!\n1. 어묵탕을 탭\n2. 어묵 손님을 탭', at: { x: 176, y: TOP_GUIDE_Y }, dim: false });
+      this.guide('odeng-serve', { finger: { x: this.front.odengAt.x, y: this.front.odengAt.y }, text: '오랭어묵 완성!\n1. 어묵탕을 탭\n2. 어묵 손님을 탭', at: { x: 176, y: TOP_GUIDE_Y }, dim: false });
     }
     if (this.guideKey && GameScene.GUIDE_DONE[this.guideKey]?.includes(name)) {
       if (this.guideKey === 'burnt') {

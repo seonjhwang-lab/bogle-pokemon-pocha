@@ -203,28 +203,30 @@ def frame_burnt(i):
 
 # --- 토핑 오버레이 (냄비 국물 위 좌표에 맞춤) ----------------------------
 def topping_egg():
+    """분홍 모몬열매 토핑"""
     c = Canvas(W, H)
-    c.ellipse(16.5, 20, 5, 2.5, 'white')
-    c.ellipse(16.5, 20, 5, 2.5, 'gray_lt', fill=False)
-    c.hline(13, 18, 19, 'white')
-    c.ellipse(17, 20, 1.6, 1.2, 'orange')
-    c.px(16, 19, 'gold'); c.px(17, 19, 'yellow')
+    c.ellipse(16.5, 20, 4.5, 2.5, 'pink_hot')
+    c.ellipse(16.5, 19.8, 3.8, 2, 'pink')
+    c.hline(14, 17, 19, 'white')
+    c.px(16, 20, 'pink_hot'); c.px(17, 20, 'pink_hot')
+    c.hline(16, 17, 18, 'green')
     return c
 
 
 def topping_scallion():
+    """파란 오랭열매 슬라이스 토핑"""
     c = Canvas(W, H)
     rings = [(29, 18), (32, 20), (27, 21), (34, 22), (30, 23), (24, 18), (21, 23), (36, 19), (12, 22)]
     for (x, y) in rings:
-        c.px(x, y, 'green'); c.px(x + 1, y, 'green_dk')
-        c.px(x, y + 1, 'green_dk') if (x + y) % 3 == 0 else None
-    c.px(30, 18, 'cream'); c.px(33, 20, 'yellow')
+        c.px(x, y, 'blue'); c.px(x + 1, y, 'blue_dk')
+        c.px(x, y + 1, 'blue_dk') if (x + y) % 3 == 0 else None
+    c.px(30, 18, 'cyan'); c.px(33, 20, 'cyan')
     return c
 
 
 def topping_cheese():
     c = Canvas(W, H)
-    # 원근 걸린 치즈 한 장 (평행사변형)
+    # 원근 걸린 튼튼치즈 한 장 (평행사변형)
     for j, y in enumerate(range(16, 22)):
         x0 = 23 - j // 2
         c.hline(x0, x0 + 8, y, 'yellow')

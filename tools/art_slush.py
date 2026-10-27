@@ -1,15 +1,15 @@
-"""slush_machine — 48x64 추억의 오렌지 슬러시 기계 + 컵 게이지 오버레이."""
+"""slush_machine — 48x64 자뭉열매 슬러시 기계 + 컵 게이지 오버레이."""
 from pixel import Canvas
 
 W, H = 48, 64
 
 
 def tank(c: Canvas, phase: int, fast=False):
-    # 뚜껑
-    c.rect(12, 1, 24, 3, 'red')
-    c.hline(12, 35, 1, 'pink')
-    c.rect(21, 0, 6, 1, 'red_dk')
-    # 투명 돔 통 (x 9..38, y 4..29)
+    # 뚜껑 (초록 자뭉열매 꼭지 느낌 + 노란 테두리)
+    c.rect(12, 1, 24, 3, 'green_dk')
+    c.hline(12, 35, 1, 'green')
+    c.rect(21, 0, 6, 1, 'green_dkr')
+    # 투명 돔 통 (x 9..38, y 4..29) — 황금빛 노란 자뭉열매 슬러시
     for y in range(4, 30):
         x0, x1 = 9, 38
         if y < 6:
@@ -19,7 +19,7 @@ def tank(c: Canvas, phase: int, fast=False):
                 col = 'gray_lt' if (x + y) % 7 else 'white'
                 c.px(x, y, col) if x in (x0, x1) else None
             else:
-                c.px(x, y, 'orange')
+                c.px(x, y, 'gold')
         c.px(x0, y, 'gray_lt'); c.px(x1, y, 'gray')
     # 빈 윗부분은 유리 반투명 느낌
     c.rect(10, 5, 28, 6, 'gray_lt')
@@ -28,16 +28,16 @@ def tank(c: Canvas, phase: int, fast=False):
     # 슬러시 표면 (출렁)
     for x in range(10, 38):
         top = 11 + ((x // 3 + phase) % 2)
-        c.vline(x, 11, top, 'gold')
-        c.px(x, top + 1, 'gold')
-    # 회전 스크류: 대각선 하얀 줄이 위상차로 이동
+        c.vline(x, 11, top, 'yellow')
+        c.px(x, top + 1, 'yellow')
+    # 회전 스크류: 대각선 밝은 노란/주황 줄이 위상차로 이동
     step = 2 if fast else 1
     for y in range(14, 29):
         for x in range(12, 36):
             if (x + y + phase * 3 * step) % 8 == 0:
-                c.px(x, y, 'gold')
-            if (x + y + phase * 3 * step) % 8 == 1 and 17 < x < 31:
                 c.px(x, y, 'yellow')
+            if (x + y + phase * 3 * step) % 8 == 1 and 17 < x < 31:
+                c.px(x, y, 'orange')
     c.vline(24, 13, 28, 'white')  # 중앙 축
     # 유리 하이라이트
     c.vline(12, 7, 26, 'white')
@@ -48,12 +48,12 @@ def body(c: Canvas, lever_down: bool, warn: str):
     c.rect(6, 30, 36, 30, 'red')
     c.rect(36, 30, 6, 30, 'red_dk')
     c.hline(6, 41, 30, 'pink')
-    # 흰 띠 + 로고판
+    # 흰 띠 + 자뭉열매 로고판
     c.rect(6, 33, 36, 3, 'white')
     c.hline(6, 41, 35, 'gray_lt')
     c.rect(9, 38, 10, 6, 'cream')
-    c.ellipse(13.5, 40.5, 2, 2, 'orange')
-    c.px(13, 39, 'gold'); c.px(14, 38, 'green')
+    c.ellipse(13.5, 40.5, 2, 2.2, 'gold')
+    c.px(13, 40, 'yellow'); c.px(14, 38, 'green')
     # 경고등
     c.px(39, 38, warn); c.px(40, 38, warn); c.px(39, 39, warn); c.px(40, 39, warn)
     # 노즐
@@ -82,12 +82,12 @@ def machine(phase, lever_down=False, warn='green', stream=False, puddle=False):
     tank(c, phase, fast=lever_down)
     body(c, lever_down, warn)
     if stream:
-        c.vline(23, 44, 48, 'orange'); c.vline(24, 44, 48, 'gold')
+        c.vline(23, 44, 48, 'gold'); c.vline(24, 44, 48, 'yellow')
     if puddle:
-        c.hline(13, 34, 55, 'orange'); c.hline(15, 31, 54, 'orange')
-        c.px(17, 53, 'gold'); c.px(28, 53, 'gold'); c.px(22, 56, 'orange')
+        c.hline(13, 34, 55, 'gold'); c.hline(15, 31, 54, 'gold')
+        c.px(17, 53, 'yellow'); c.px(28, 53, 'yellow'); c.px(22, 56, 'gold')
         for (x, y) in ((22, 43), (25, 44), (21, 46)):
-            c.px(x, y, 'orange')
+            c.px(x, y, 'gold')
     c.outline('black')
     return c
 
@@ -113,19 +113,18 @@ def cup(level: int, overflow=False):
         filled = idx >= h - fill_rows
         for x in range(x0, x1 + 1):
             if filled:
-                c.px(x, y, 'orange')
+                c.px(x, y, 'gold')
             elif x in (x0 + 1,):
                 c.px(x, y, 'white')
         if filled and idx == h - fill_rows:
-            c.hline(x0, x1, y, 'gold')
+            c.hline(x0, x1, y, 'yellow')
         c.px(x0, y, 'gray_lt'); c.px(x1, y, 'gray')
     c.hline(17, 30, CUP_TOP, 'white')  # 컵 입구 테두리
-    # 빨대 무늬 띠
     if overflow:
-        c.ellipse(23.5, CUP_TOP - 1, 7, 2.5, 'orange')
-        c.hline(19, 27, CUP_TOP - 3, 'gold')
+        c.ellipse(23.5, CUP_TOP - 1, 7, 2.5, 'gold')
+        c.hline(19, 27, CUP_TOP - 3, 'yellow')
         for (x, y0, y1) in ((17, 46, 52), (30, 46, 55), (21, 47, 49)):
-            c.vline(x, y0, y1, 'orange')
+            c.vline(x, y0, y1, 'gold')
     c.outline('black')
     return c
 

@@ -10,64 +10,64 @@ import { makeButton, txt } from './Juice';
 export type Speaker = 'me' | 'grandma' | 'hsgirl' | 'judo';
 export interface StoryLine { who: Speaker; text: string }
 
-const NAME: Record<Speaker, string> = { me: '나 (새 사장)', grandma: '할머니', hsgirl: '여고생 반장', judo: '유도부 주장' };
+const NAME: Record<Speaker, string> = { me: '피카츄 (새 사장)', grandma: '오박사', hsgirl: '님피아', judo: '잠만보' };
 const TAG: Record<Speaker, number> = { me: C.red, grandma: C.purple, hsgirl: C.pink, judo: C.blue };
 
 export const STORY: Record<string, { title: string; lines: StoryLine[] }> = {
   d1: {
     title: '프롤로그',
     lines: [
-      { who: 'me', text: '1999년 봄, 할머니 대신 맡게 된\n학교 앞 작은 분식집 「보글보글」…' },
-      { who: 'grandma', text: '허리 나을 때까지만 가게 좀 부탁하마.\n라면은 물 끓을 때 면 넣는 게 제일이여!' },
-      { who: 'me', text: '좋아, 오늘부터 내가 사장이다!\n완성된 라면은 원하는 손님에게 직접 건네자!' },
+      { who: 'me', text: '태초마을 골목길, 오박사님 대신 맡게 된\n작은 포켓몬 열매 포차 「보글보글」…' },
+      { who: 'grandma', text: '학회 다녀올 때까지만 포차 좀 부탁하마.\n라면은 물 끓을 때 면 넣는 게 제일이여!' },
+      { who: 'me', text: '피카! 오늘부터 내가 요리사 사장이다!\n완성된 라면은 원하는 포켓몬에게 직접 건네자!' },
     ],
   },
   d2: {
     title: 'DAY 2',
     lines: [
-      { who: 'grandma', text: '대파는 송송 썰고, 계란은 톡!\n재료를 먼저 집고, 넣을 냄비를 콕 찍으렴.' },
-      { who: 'me', text: '재료 → 냄비, 완성 냄비 → 손님.\n순서만 지키면 문제없어!' },
+      { who: 'grandma', text: '오랭열매는 송송 썰고, 모몬열매는 톡!\n재료를 먼저 집고, 넣을 냄비를 콕 찍으렴.' },
+      { who: 'me', text: '열매 재료 → 냄비, 완성 냄비 → 손님.\n순서만 지키면 문제없어!' },
     ],
   },
   d3: {
     title: 'DAY 3',
     lines: [
-      { who: 'me', text: '오늘은 새로 들인 슬러시 기계랑\n떡볶이 철판을 개시하는 날!' },
-      { who: 'grandma', text: '떡볶이는 자주 저어야 윤기가 나는 거여.\n눌어붙으면 휘휘 저어 주고!' },
+      { who: 'me', text: '오늘은 새로 들인 자뭉열매 슬러시 기계랑\n체리열매 포핀 떡볶이 철판을 개시하는 날!' },
+      { who: 'grandma', text: '포핀 떡볶이는 자주 저어야 윤기가 나는 거여.\n눌어붙으면 휘휘 저어 주고!' },
     ],
   },
   d4: {
     title: 'DAY 4',
     lines: [
-      { who: 'grandma', text: '그릇이 모자라면 장사 못 혀.\n설거지 부지런히 하고 어묵 국물도 팔팔!' },
-      { who: 'me', text: '어묵탕 개시! 빈 통을 탭하면\n꼬치 3개가 들어가는구나.' },
+      { who: 'grandma', text: '그릇이 모자라면 장사 못 혀.\n설거지 부지런히 하고 오랭열매 어묵 국물도 팔팔!' },
+      { who: 'me', text: '오랭열매 어묵탕 개시! 빈 통을 탭하면\n꼬치 3개가 들어가는구나.' },
     ],
   },
   d5: {
     title: 'DAY 5',
     lines: [
-      { who: 'me', text: '하교 종소리다… 운동장에서\n애들이 우르르 몰려온다!' },
-      { who: 'grandma', text: '고양이 녀석이 또 기웃거리네.\n손질대에 올라오면 쫓아내렴!' },
+      { who: 'me', text: '배틀 끝난 시간이다… 광장에서\n포켓몬들이 우르르 몰려온다!' },
+      { who: 'grandma', text: '로켓단 나옹이 또 기웃거리네.\n손질대에 올라오면 탭해서 쫓아내렴!' },
     ],
   },
   h1: {
-    title: '히든 스테이지 · 여고생 군단',
+    title: '히든 스테이지 · 이브이즈 군단',
     lines: [
-      { who: 'hsgirl', text: '사장님~ 우리 시험 끝났어요!\n치즈라면이랑 떡볶이, 슬러시 세트요!' },
-      { who: 'me', text: '세트 러시다… 떡볶이 철판부터\n윤기 나게 데워 두자!' },
+      { who: 'hsgirl', text: '피카츄 사장님~ 콘테스트 끝났어요!\n튼튼치즈라면이랑 포핀 떡볶이, 자뭉 슬러시 세트요!' },
+      { who: 'me', text: '이브이즈 세트 러시다… 포핀 떡볶이 철판부터\n윤기 나게 데워 두자!' },
     ],
   },
   h2: {
-    title: '히든 스테이지 · 유도부 강습',
+    title: '히든 스테이지 · 잠만보 대식가',
     lines: [
-      { who: 'judo', text: '오스!! 유도부 훈련 끝났습니다!\n라면 두 그릇씩 부탁드립니다!!' },
-      { who: 'me', text: '대식가들이다! 같은 손님에게\n라면을 한 그릇씩 두 번 서빙!' },
+      { who: 'judo', text: '쿠아앙!! 낮잠 자고 일어났더니 배고파요!\n열매 라면 두 그릇씩 부탁드립니다!!' },
+      { who: 'me', text: '잠만보 대식가들이다! 같은 손님에게\n라면을 한 그릇씩 두 번 서빙!' },
     ],
   },
   endless: {
     title: '무한 리필 서바이벌',
     lines: [
-      { who: 'grandma', text: '이제 너도 어엿한 사장이구나.\n손님이 끝도 없이 올 테니 버텨 보거라!' },
+      { who: 'grandma', text: '이제 너도 어엿한 열매 포차 사장이구나.\n포켓몬 손님이 끝도 없이 올 테니 버텨 보거라!' },
     ],
   },
 };

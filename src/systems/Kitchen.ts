@@ -24,7 +24,7 @@ export interface KitchenHooks {
 interface Held { t: Topping; station: StationId; until: number }
 interface DragCand { station: StationId; t: Topping; x0: number; y0: number; id: number }
 
-const STATION_LABEL: Record<StationId, string> = { board: '도마·대파', egg: '계란', cheese: '치즈', sink: '싱크대' };
+const STATION_LABEL: Record<StationId, string> = { board: '도마·오랭', egg: '모몬열매', cheese: '튼튼치즈', sink: '싱크대' };
 const STATION_UNLOCK_DAY: Record<StationId, number> = { board: 2, egg: 2, cheese: 3, sink: 4 };
 
 export class Kitchen {
@@ -146,7 +146,7 @@ export class Kitchen {
     }
     if (this.blockedBy === id) {
       this.sfx.meow();
-      this.hooks.hint('고양이가 앉아 있어요! 고양이를 탭!', CSS.orange);
+      this.hooks.hint('나옹이 앉아 있어요! 나옹을 탭!', CSS.orange);
       bounce(this.scene, this.stationSprite[id], 0.1);
       return;
     }
@@ -182,7 +182,7 @@ export class Kitchen {
       this.scallionReady = true;
       this.chop = this.chopsNeeded;
       sparkle(this.scene, sp.x, sp.y);
-      floatText(this.scene, sp.x, sp.y - 16, '썬 대파 준비!', CSS.green);
+      floatText(this.scene, sp.x, sp.y - 16, '오랭열매 준비!', CSS.green);
       this.hooks.event('scallion-ready');
     }
     this.drawStationGauges();

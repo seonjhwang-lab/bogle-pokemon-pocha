@@ -1,10 +1,10 @@
-"""prep — 56x44 손질대 스테이션: 도마&대파(썰기 4단계), 계란 바구니, 치즈 접시, 싱크대."""
+"""prep — 56x44 손질대 스테이션: 도마&오랭열매(썰기 4단계), 모몬열매 바구니, 튼튼치즈 접시, 싱크대."""
 from pixel import Canvas
 
 W, H = 56, 44
 
 
-# ─── 도마 & 대파 ──────────────────────────────────────────────
+# ─── 도마 & 파란 오랭열매 ───────────────────────────────────────
 def board_base(c: Canvas):
     c.rect(4, 14, 48, 26, 'tan')
     c.rect(4, 14, 48, 2, 'cream')
@@ -16,26 +16,23 @@ def board_base(c: Canvas):
 
 
 def scallion_whole(c: Canvas, cut_upto: float):
-    """대각선으로 놓인 대파. cut_upto(0~1)만큼 오른쪽부터 송송 썰림."""
-    pts = []
-    for k in range(34):
-        x, y = 9 + k, 33 - k // 3
-        pts.append((x, y))
-    n_cut = int(len(pts) * cut_upto)
-    whole = pts[: len(pts) - n_cut]
-    for idx, (x, y) in enumerate(whole):
-        green = idx > 9
-        c.px(x, y, 'green' if green else 'white')
-        c.px(x, y + 1, 'green_dk' if green else 'cream')
-        c.px(x, y - 1, 'green' if green else 'white')
-    if whole:
-        c.px(whole[0][0] - 1, whole[0][1], 'cream')     # 뿌리
-        c.px(whole[0][0] - 2, whole[0][1] + 1, 'tan')
-    # 썰린 조각 (작은 링)
-    for i in range(n_cut // 3):
-        x = 40 - i * 4 + (i % 2)
-        y = 30 - (i % 3) * 3
-        c.px(x, y, 'green'); c.px(x + 1, y, 'green_dk'); c.px(x, y + 1, 'cream')
+    """도마 위에 놓인 파란 오랭열매 3알. cut_upto(0~1)만큼 오른쪽부터 송송 썰림."""
+    berries = [(15, 29), (25, 26), (35, 23)]
+    n_cut = int(round(cut_upto * 3))
+    whole = berries[: 3 - n_cut]
+    for (bx, by) in whole:
+        # 둥근 파란 오랭열매 + 초록 꼭지
+        c.ellipse(bx, by, 4, 3.8, 'blue_dk')
+        c.ellipse(bx - 0.5, by - 0.5, 3.2, 3, 'blue')
+        c.px(int(bx) - 1, int(by) - 1, 'cyan'); c.px(int(bx) - 2, int(by), 'cyan')
+        c.hline(int(bx) - 1, int(bx) + 1, int(by) - 4, 'green')
+        c.px(int(bx), int(by) - 5, 'green_dk')
+    # 썰린 오랭열매 조각 (파란/하늘 과육 슬라이스)
+    for i in range(n_cut * 3):
+        x = 40 - i * 3 + (i % 2)
+        y = 31 - (i % 3) * 3
+        c.ellipse(x, y, 1.8, 1.4, 'blue')
+        c.px(x, y, 'cyan'); c.px(x + 1, y, 'blue_dk')
 
 
 def knife_on_board(c: Canvas, lifted: bool):
@@ -54,30 +51,31 @@ def board(stage: int, lifted=False):
     if stage < 3:
         scallion_whole(c, stage / 3)
     else:
-        # 송송 썬 대파 소복이
+        # 송송 썬 파란 오랭열매 소복이
         import random
         r = random.Random(3)
         for _ in range(26):
             x = r.randint(14, 36); y = r.randint(22, 34)
-            c.px(x, y, r.choice(['green', 'green', 'green_dk', 'cream']))
-            c.px(x + 1, y, 'green_dk')
+            c.px(x, y, r.choice(['blue', 'blue', 'blue_dk', 'cyan']))
+            c.px(x + 1, y, 'blue_dk')
         for (x, y) in ((20, 24), (28, 27), (24, 31), (32, 24)):
-            c.ellipse(x, y, 1.6, 1.6, 'green'); c.px(x, y, 'cream')
+            c.ellipse(x, y, 1.8, 1.6, 'blue'); c.px(x, y, 'cyan')
     knife_on_board(c, lifted)
     return c
 
 
-# ─── 계란 바구니 ──────────────────────────────────────────────
+# ─── 분홍 모몬열매 바구니 ─────────────────────────────────────────
 def egg_basket():
     c = Canvas(W, H)
-    # 계란 (뒤)
+    # 분홍 모몬열매 (복숭아 모양 + 초록 잎사귀)
     for (x, y) in ((17, 16), (27, 13), (37, 16), (22, 20), (33, 20)):
-        c.ellipse(x, y, 4.5, 5.5, 'white')
-        c.ellipse(x + 1, y + 1, 3, 4, 'cream')
-        c.ellipse(x - 0.5, y - 0.5, 3.5, 4.5, 'white')
-        c.px(int(x) - 2, int(y) - 3, 'white')
+        c.ellipse(x, y, 4.5, 5, 'pink_hot')
+        c.ellipse(x - 0.5, y - 0.5, 3.8, 4.2, 'pink')
+        c.px(int(x) - 2, int(y) - 2, 'white'); c.px(int(x) - 1, int(y) - 2, 'white')
+        c.vline(int(x), int(y) - 3, int(y) + 2, 'pink_hot')  # 복숭아 골
+        c.hline(int(x) - 1, int(x) + 1, int(y) - 5, 'green'); c.px(int(x), int(y) - 6, 'green_dk')
     eggs = c.copy()
-    eggs.outline('gray')
+    eggs.outline('purple_dk')
     c = Canvas(W, H)
     c.paste(eggs)
     # 바구니 (등나무 짜임)
@@ -97,21 +95,22 @@ def egg_basket():
     return out
 
 
-# ─── 치즈 접시 ────────────────────────────────────────────────
+# ─── 노란 튼튼치즈 접시 ──────────────────────────────────────────
 def cheese_plate():
     c = Canvas(W, H)
     c.ellipse(27.5, 30, 24, 8, 'white')
     c.ellipse(27.5, 30, 24, 8, 'gray_lt', fill=False)
     c.ellipse(27.5, 29, 18, 5, 'gray_lt')
     c.ellipse(27.5, 28.5, 18, 5, 'white')
-    # 슬라이스 치즈 4장 (비닐 포장 끝이 살짝 들림)
+    # 노란 튼튼치즈 슬라이스 4장 (구멍 뽕뽕 치즈 디테일)
     for k in range(4):
         y = 26 - k * 3
         x = 16 + (k % 2) * 2
         for j in range(8):
-            c.hline(x + j // 2, x + 22 + j // 2, y - j + 4 - 4, 'yellow')
-        c.hline(x, x + 22, y + 1 - 4 + 4, 'gold')
-        c.hline(x + 4, x + 26, y - 7 - 4 + 4, 'white')
+            c.hline(x + j // 2, x + 22 + j // 2, y - j, 'yellow')
+        c.hline(x, x + 22, y + 1, 'gold')
+        c.hline(x + 4, x + 26, y - 7, 'white')
+        c.px(x + 8, y - 3, 'gold'); c.px(x + 15, y - 4, 'gold')
     tmp = c.copy()
     tmp.outline('brown')
     return tmp

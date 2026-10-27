@@ -22,8 +22,8 @@ export interface ProgressData {
   news: string[];
 }
 
-const KEY = 'bogle-alley-tycoon-v3';
-const OLD_KEY = 'bogle-alley-tycoon-v2';
+const KEY = 'bogle-pokemon-pocha-v3';
+const OLD_KEY = 'bogle-pokemon-pocha-v2';
 
 function fresh(): ProgressData {
   return {

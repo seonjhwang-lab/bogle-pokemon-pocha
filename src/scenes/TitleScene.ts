@@ -9,10 +9,10 @@ import { showConfirm, showShop } from '../ui/Popups';
 import { drawBackdrop } from '../ui/Backdrop';
 
 const NEWS_TEXT: Record<string, string> = {
-  h1: '히든 스테이지 「여고생 군단」이 열렸어요!',
-  h2: '히든 스테이지 「유도부 강습」이 열렸어요!',
+  h1: '히든 스테이지 「이브이즈 군단」이 열렸어요!',
+  h2: '히든 스테이지 「잠만보 대식가」가 열렸어요!',
   star4: '★4 도전 등급 해금! Day 기록을 더 높여 보세요',
-  star5: '★5 전설의 맛집 등급 해금!',
+  star5: '★5 전설의 포차 등급 해금!',
   endless: '무한 리필 서바이벌이 열렸어요!',
 };
 
@@ -35,7 +35,7 @@ export class TitleScene extends Phaser.Scene {
     const bottomTop = H - 82;
     const logoY = compact ? 20 : 36;
     const l1 = txt(this, GAME_W / 2, logoY, '보글보글', { font: FONT.bold, size: 12, color: CSS.yellow, stroke: CSS.redDk, strokeW: 3 }).setOrigin(0.5).setScale(compact ? 2.3 : 3).setDepth(510);
-    txt(this, GAME_W / 2, logoY + (compact ? 26 : 34), '골목 타이쿤', { font: FONT.bold, size: 12, color: CSS.white, stroke: CSS.redDk, strokeW: 3 }).setOrigin(0.5).setScale(compact ? 1.5 : 2).setDepth(510);
+    txt(this, GAME_W / 2, logoY + (compact ? 26 : 34), '포켓몬 열매 포차', { font: FONT.bold, size: 12, color: CSS.white, stroke: CSS.redDk, strokeW: 3 }).setOrigin(0.5).setScale(compact ? 1.5 : 2).setDepth(510);
     this.tweens.add({ targets: l1, y: logoY - 3, yoyo: true, repeat: -1, duration: 800, ease: 'Sine.InOut' });
     let listTop = logoY + (compact ? 40 : 54);
     if (H >= 470) {
@@ -90,9 +90,9 @@ export class TitleScene extends Phaser.Scene {
     const sy = listTopY + DAYS.length * step + 4;
     const tw = Math.floor((bw - 8) / 3);
     const tiles: { id: string; open: boolean; icon: string; name: string; sub: string; color: number }[] = [
-      { id: 'h1', open: p.h1Unlocked, icon: 'ui_ribbon', name: '여고생 군단', sub: p.h1Cleared ? `클리어 ${p.hiddenBest.h1}G` : p.h1Unlocked ? '깨면 ★4 해금' : '★3 달성 시', color: C.magenta },
-      { id: 'h2', open: p.h2Unlocked, icon: 'ui_belt', name: '유도부 강습', sub: p.h2Cleared ? `클리어 ${p.hiddenBest.h2}G` : p.h2Unlocked ? '깨면 ★5 해금' : '별12 / D5 클리어', color: C.blueDk },
-      { id: 'endless', open: p.endlessUnlocked, icon: 'ui_trophy', name: '무한 리필', sub: p.endlessUnlocked ? `최고 ${p.endlessBest.revenue}G` : '유도부 클리어', color: C.redDk },
+      { id: 'h1', open: p.h1Unlocked, icon: 'ui_ribbon', name: '이브이즈 군단', sub: p.h1Cleared ? `클리어 ${p.hiddenBest.h1}G` : p.h1Unlocked ? '깨면 ★4 해금' : '★3 달성 시', color: C.magenta },
+      { id: 'h2', open: p.h2Unlocked, icon: 'ui_belt', name: '잠만보 대식가', sub: p.h2Cleared ? `클리어 ${p.hiddenBest.h2}G` : p.h2Unlocked ? '깨면 ★5 해금' : '별12 / D5 클리어', color: C.blueDk },
+      { id: 'endless', open: p.endlessUnlocked, icon: 'ui_trophy', name: '무한 리필', sub: p.endlessUnlocked ? `최고 ${p.endlessBest.revenue}G` : '잠만보 클리어', color: C.redDk },
     ];
     const tileCenters: Record<string, number[]> = {};
     tiles.forEach((t, i) => {

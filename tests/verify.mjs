@@ -1,15 +1,16 @@
 // v3.0 헤드리스 검증 — 2단계 수동 타겟팅 · 전방 매대 · 소품 · 히든/별5 · 무한 모드
 //   VP=360x520 node verify.mjs  (기본 390x844)
-import chromium from '@sparticuz/chromium';
+import fs from 'node:fs'; import chromium from '@sparticuz/chromium'; import { createServer } from 'vite'; fs.mkdirSync('tools/preview', { recursive: true });
 import puppeteer from 'puppeteer-core';
-const BASE = process.env.BASE || 'http://localhost:5173/';
+const viteSrv = await createServer({ server: { host: '127.0.0.1', port: 0, hmr: false } }); await viteSrv.listen(); const BASE = `http://127.0.0.1:${viteSrv.httpServer.address().port}/`;
 const [VW, VH] = (process.env.VP || '390x844').split('x').map(Number);
-const browser = await puppeteer.launch({ args: [...chromium.args], executablePath: await chromium.executablePath(), headless: true,
+// dynamic port server started above
+const browser = await puppeteer.launch({ args: process.platform === 'win32' ? ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--no-first-run'] : [...chromium.args], executablePath: process.env.CHROME_PATH || (process.platform === 'win32' ? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe' : await chromium.executablePath()), headless: true,
   defaultViewport: { width: VW, height: VH, deviceScaleFactor: 1, isMobile: true, hasTouch: true } });
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const results = [];
-const check = (name, ok, info = '') => { results.push(`${ok ? 'PASS' : 'FAIL'}  ${name}${info ? '  — ' + info : ''}`); };
-const KEY = 'bogle-alley-tycoon-v3';
+const check = (name, ok, info = '') => { const msg = `${ok ? 'PASS' : 'FAIL'}  ${name}${info ? '  — ' + info : ''}`; results.push(msg); console.log(msg); };
+const KEY = 'bogle-pokemon-pocha-v3';
 const ALL_STORY = ['d1', 'd2', 'd3', 'd4', 'd5', 'h1', 'h2', 'endless'];
 const store = (o = {}) => ({
   wallet: 0, upgrades: { burner: false, knife: false, autowash: false, arcade: false, tv: false },
@@ -23,9 +24,9 @@ async function open(url, st, { closeIntro = true } = {}) {
   page.setDefaultTimeout(120000);
   page.errs = [];
   page.on('pageerror', e => page.errs.push(e.message));
-  await page.goto(BASE, { waitUntil: 'networkidle0' });
+  await page.goto(BASE, { waitUntil: 'load' });
   await page.evaluate((st, KEY) => { localStorage.clear(); if (st) localStorage.setItem(KEY, JSON.stringify(st)); }, st, KEY);
-  await page.goto(url, { waitUntil: 'networkidle0' });
+  await page.goto(url, { waitUntil: 'load' });
   await sleep(1300);
   const rect = await page.evaluate(() => { const r = document.querySelector('canvas').getBoundingClientRect(); return { l: r.left, t: r.top, w: r.width, h: r.height, gh: window.__game.config.height }; });
   page.S = (x, y) => [rect.l + x * rect.w / 240, rect.t + y * rect.h / rect.gh];
@@ -79,8 +80,8 @@ async function cook(p, i, fast = true) {
   const tl = await p.ev(() => window.__titleLayout);
   await p.tap(...tl.days[0]); await sleep(900);
   const st = await p.ev(() => ({ story: window.__story && window.__story.key, phase: window.__bogle.debug.phase }));
-  check('첫 시작: 프롤로그 스토리 컷신 (1999년 봄…)', st.story === 'd1' && st.phase === 'story', JSON.stringify(st));
-  await p.screenshot({ path: '/tmp/claude-0/v3/verify_story.png' });
+  check('첫 시작: 프롤로그 스토리 컷신 (태초마을 골목길…)', st.story === 'd1' && st.phase === 'story', JSON.stringify(st));
+  await p.screenshot({ path: 'tools/preview/verify_story.png' });
   for (let i = 0; i < 8; i++) { await p.ev(() => window.__story.advance()); await sleep(120); }
   await p.ev(() => window.__story.finish()); await sleep(500);
   p.L = await p.ev(() => window.__layout);
@@ -98,10 +99,10 @@ async function cook(p, i, fast = true) {
   await p.tap(...L(p).pots[0]); await sleep(300);
   const k5 = await p.ev(() => ({ key: window.__bogle['tutKey'], held: window.__bogle.debug.kitchen.pots[0].held, state: window.__bogle.debug.kitchen.pots[0].state, rev: window.__bogle.revenue }));
   check('완성 냄비 탭 → 자동 서빙 없이 HELD_POT + "2. 전달할 손님을 탭"', k5.key === 'serve-target' && k5.held && k5.state === 'READY' && k5.rev === 0, JSON.stringify(k5));
-  await p.screenshot({ path: '/tmp/claude-0/v3/verify_tut_target.png' });
+  await p.screenshot({ path: 'tools/preview/verify_tut_target.png' });
   const slot = await p.ev(() => window.__bogle['tutCustomer'].slot);
   await p.tap(...L(p).slotsBody[slot]); await sleep(1100);
-  const k6 = await p.ev(() => ({ ph: window.__bogle.debug.phase, done: JSON.parse(localStorage.getItem('bogle-alley-tycoon-v3')).tutorialDone, rev: window.__bogle.revenue }));
+  const k6 = await p.ev(() => ({ ph: window.__bogle.debug.phase, done: JSON.parse(localStorage.getItem('bogle-pokemon-pocha-v3')).tutorialDone, rev: window.__bogle.revenue }));
   check('손님 탭 → 그 손님에게 서빙 + 튜토리얼 저장', k6.ph === 'run' && k6.done && k6.rev > 0, JSON.stringify(k6));
   check('Day1 페이지 에러 없음', p.errs.length === 0, p.errs.join(' | '));
   await p.close();
@@ -257,7 +258,7 @@ async function cook(p, i, fast = true) {
   const bt = await p.ev(() => window.__bogle.debug.front.tteok);
   for (let i = 0; i < 3; i++) { await p.tap(...L(p).griddle); await sleep(120); }
   check('졸음 방치 → BURNT → 3번 탭으로 긁어내기', bt === 'BURNT' && (await p.ev(() => window.__bogle.debug.front.tteok)) === 'EMPTY', bt);
-  await p.screenshot({ path: '/tmp/claude-0/v3/verify_tteok.png' });
+  await p.screenshot({ path: 'tools/preview/verify_tteok.png' });
   check('떡볶이 페이지 에러 없음', p.errs.length === 0, p.errs.join(' | '));
   await p.close();
 }
@@ -307,7 +308,7 @@ async function cook(p, i, fast = true) {
   await p.ev(() => { const s = window.__bogle; s.combo = 4; s['onComplete']({ slot: 0, kind: 'kid', patience: 1, mistake: false, spec: { ramen: 1 } }); });
   const fv = await p.ev(() => ({ left: window.__bogle.feverLeft, total: window.__bogle['feverTotal'] }));
   check('TV 효과: 피버 타임 8초 + 3초 = 11초', fv.total === 11000 && fv.left > 0, JSON.stringify(fv));
-  await p.screenshot({ path: '/tmp/claude-0/v3/verify_props.png' });
+  await p.screenshot({ path: 'tools/preview/verify_props.png' });
   check('소품 페이지 에러 없음', p.errs.length === 0, p.errs.join(' | '));
   await p.close();
 }
@@ -316,20 +317,20 @@ async function cook(p, i, fast = true) {
 {
   // 별 3개 최초 달성 → 히든1 해금
   const p = await open(BASE, store({ best: [3, 0, 0, 0, 0], unlocked: 2, story: ['d1', 'd2', 'd3', 'd4', 'd5'] }), { closeIntro: false });
-  const t1 = await p.ev(() => ({ h1: JSON.parse(localStorage.getItem('bogle-alley-tycoon-v3') || '{}').h1Unlocked, tiles: window.__titleLayout.tiles }));
+  const t1 = await p.ev(() => ({ h1: JSON.parse(localStorage.getItem('bogle-pokemon-pocha-v3') || '{}').h1Unlocked, tiles: window.__titleLayout.tiles }));
   check('별 3개 달성 기록 → 타이틀에 히든 스테이지 1 배너 해금', t1.h1 === true && !!t1.tiles.h1, JSON.stringify(t1.h1));
   await p.tap(...t1.tiles.h1); await sleep(900);
   const s1 = await p.ev(() => ({ id: window.__bogle.debug.cfg.id, story: window.__story && window.__story.key }));
-  check('히든1 진입 시 스토리 컷신(여고생 반장)', s1.id === 'h1' && s1.story === 'h1', JSON.stringify(s1));
+  check('히든1 진입 시 스토리 컷신(님피아)', s1.id === 'h1' && s1.story === 'h1', JSON.stringify(s1));
   await p.ev(() => window.__story && window.__story.finish()); await sleep(400);
   p.L = await p.ev(() => window.__layout);
   await p.tap(...p.L.center); await sleep(1600);
   const kinds = await p.ev(() => { const s = window.__bogle; s.spawnIn = 0; return s.debug.customers.list.map(c => c.kind + ':' + JSON.stringify(c.spec)); });
   await p.ev(() => { const s = window.__bogle; s.revenue = 2000; s.timeLeft = 50; }); await sleep(2600);
-  const r = await p.ev(() => ({ res: window.__lastResult, p: JSON.parse(localStorage.getItem('bogle-alley-tycoon-v3')) }));
+  const r = await p.ev(() => ({ res: window.__lastResult, p: JSON.parse(localStorage.getItem('bogle-pokemon-pocha-v3')) }));
   check('히든1 클리어 → 보너스 500G + 별 4개 도전 등급', r.res.cleared && r.res.bonus === 500 && r.p.h1Cleared, `${JSON.stringify({ cleared: r.res.cleared, bonus: r.res.bonus })} ${kinds.slice(0, 2).join(' | ')}`);
   await sleep(2500);
-  await p.screenshot({ path: '/tmp/claude-0/v3/verify_h1_receipt.png' });
+  await p.screenshot({ path: 'tools/preview/verify_h1_receipt.png' });
   await p.close();
 }
 {
@@ -340,7 +341,7 @@ async function cook(p, i, fast = true) {
   await cook(p, 0);
   await p.tap(...L(p).pots[0]); await sleep(200); await p.tap(...L(p).slots[2]); await sleep(900);
   const a = await p.ev(() => { const c = window.__bogle.debug.customers.slots[2]; return { left: c.ramenLeft, st: c.state }; });
-  check('유도부원 x2: 1그릇 서빙 후에도 대기 (1/2)', a.left === 1 && a.st === 'wait', JSON.stringify(a));
+  check('잠만보 x2: 1그릇 서빙 후에도 대기 (1/2)', a.left === 1 && a.st === 'wait', JSON.stringify(a));
   await cook(p, 1);
   await p.tap(...L(p).pots[1]); await sleep(200); await p.tap(...L(p).slots[2]); await sleep(900);
   // (냄비 2개를 끓이는 사이 철판이 졸았을 수 있으니 윤기 상태로 맞춰 둠)
@@ -351,12 +352,12 @@ async function cook(p, i, fast = true) {
   const b = await p.ev(() => ({ tips: window.__bogle.stats.tips, served: window.__bogle.stats.served }));
   check('라면 2번 + 떡볶이 → 완성 + 왕팁(일반 팁 x3)', b.served === 1 && b.tips - tips0 >= 30, JSON.stringify({ ...b, tips0 }));
   await p.ev(() => { const s = window.__bogle; s.revenue = 3000; s.timeLeft = 50; }); await sleep(2600);
-  const r = await p.ev(() => JSON.parse(localStorage.getItem('bogle-alley-tycoon-v3')));
-  check('유도부 클리어 → 별 5개 등급 + 무한 모드 해금', r.h2Cleared && r.endlessUnlocked, JSON.stringify({ h2: r.h2Cleared, endless: r.endlessUnlocked }));
+  const r = await p.ev(() => JSON.parse(localStorage.getItem('bogle-pokemon-pocha-v3')));
+  check('잠만보 클리어 → 별 5개 등급 + 무한 모드 해금', r.h2Cleared && r.endlessUnlocked, JSON.stringify({ h2: r.h2Cleared, endless: r.endlessUnlocked }));
   await p.close();
   // 타이틀: 별 5칸 + 무한 모드 타일
   const t = await open(BASE, r, { closeIntro: false });
-  await t.screenshot({ path: '/tmp/claude-0/v3/verify_title5.png' });
+  await t.screenshot({ path: 'tools/preview/verify_title5.png' });
   const tl = await t.ev(() => window.__titleLayout);
   check('타이틀: 무한 리필 서바이벌 타일 열림', !!tl.tiles.endless);
   await t.close();
@@ -383,7 +384,7 @@ async function cook(p, i, fast = true) {
   await q.ev(() => { const s = window.__bogle; s.revenue = 99999; s.timeLeft = 50; }); await sleep(2600);
   const r4 = await q.ev(() => window.__lastResult.stars);
   await sleep(3000);
-  await q.screenshot({ path: '/tmp/claude-0/v3/verify_receipt4.png' });
+  await q.screenshot({ path: 'tools/preview/verify_receipt4.png' });
   await q.close();
   const z = await open(BASE + '?stage=d2', store());
   await z.ev(() => { const s = window.__bogle; s.revenue = 99999; s.timeLeft = 50; }); await sleep(2600);
@@ -395,4 +396,4 @@ async function cook(p, i, fast = true) {
 console.log(results.join('\n'));
 const fail = results.filter(r => r.startsWith('FAIL')).length;
 console.log(`\n${results.length - fail}/${results.length} PASS`);
-await browser.close();
+await browser.close(); if (viteSrv) await viteSrv.close();

@@ -1,6 +1,6 @@
-"""peeps — 16x24 손님 5종(초등학생·여고생·체육선생님·여고생 군단·유도부원) + 도둑고양이.
+"""peeps — 16x24 포켓몬 손님 5종(꼬부기·이브이·고라파덕·님피아·잠만보) + 로켓단 나옹.
 
-Each human: walk(4) idle(2) eat(2) angry(2). Cat: walk(4) idle(2) steal(2) flee(2).
+Each pokemon: walk(4) idle(2) eat(2) angry(2). Cat(Meowth): walk(4) idle(2) steal(2) flee(2).
 """
 from pixel import Canvas
 
@@ -11,112 +11,114 @@ BASE = {
     'h': 'plum_dk', 'W': 'white', 'g': 'gray_lt', 'R': 'red', 'r': 'red_dk',
 }
 
-# ---------------------------------------------------------------- 초등학생
+# ---------------------------------------------------------------- kid = 꼬부기 (Squirtle)
 KID_UP = [  # rows 7..20
-    "......KKKK......",
-    "....KKYYYYKK....",
-    "...KYYYYYYYyK...",
-    "...KYYYYYYyyK...",
-    "..KyyyyyyyyyyK..",
-    "...KhsssssshK...",
-    "...KssessessK...",
-    "...KsssmmsssK...",
-    "....KSSSSSSK....",
-    "..KBRBBBBBBRBK..",
-    "..KBRBBBBBBRBK..",
-    "..KsnBBBBBBnsK..",
-    "...KPPPPPPPPK...",
-    "...KPPPKKPPPK...",
+    ".....KKKKKK.....",
+    "....KCCCCCCK....",
+    "...KCCCCCCCCK...",
+    "...KCCBBBBCCK...",
+    "...KCWCCCCWCK...",
+    "...KCeCCCCeCK...",
+    "...KCCpmmpCCK...",
+    "....KBBBBBBK....",
+    "..KBCYYYYYYCBK..",
+    "..KBCYyYYyYCBK..",
+    "..KBBYYYYYYBBK..",
+    "...KTyYYYYyTK...",
+    "...KTTTTTTTTK...",
+    "...KTTKKKKTTK...",
 ]
 KID = dict(up=KID_UP, top=7, leg_top=21, legs_x=(4, 10),
-           leg_rows=['skin', 'white', 'slate'], eye_row=13, eyes=(6, 9), mouth_row=14,
-           legend={**BASE, 'Y': 'yellow', 'y': 'gold', 'B': 'blue', 'n': 'blue_dk', 'P': 'navy'},
-           bowl_row=18)
+           leg_rows=['cyan', 'cyan', 'blue'], eye_row=12, eyes=(5, 10), mouth_row=13,
+           legend={**BASE, 'C': 'cyan', 'B': 'blue', 'Y': 'yellow', 'y': 'tan', 'T': 'brown', 'p': 'pink'},
+           bowl_row=18, face_col='cyan')
 
-# ---------------------------------------------------------------- 여고생
+# ---------------------------------------------------------------- girl = 이브이 (Eevee)
 GIRL_UP = [  # rows 5..18
-    ".....KKKKKK.....",
-    "....KhhhhhhK....",
-    "...KhhhhhhhhK...",
-    "...KhhhhhhhhK...",
-    "...KhsssssshK...",
-    "...KhsesseshK...",
-    "...KhssmmsshK...",
-    "..KhKSSSSSSKhK..",
-    "..KhWNWRRWNWhK..",
-    "..KhWWRWWRWWhK..",
-    "..KgWWWWWWWWgK..",
-    "..KsNNNNNNNNsK..",
-    "...KNnNnNnNnK...",
-    "..KNNnNNnNNnNK..",
+    "..KKK......KKK..",
+    ".KTKTT....TTKTK.",
+    ".KTTbKKKKKKbTTK.",
+    "..KTTTTTTTTTTK..",
+    "...KTTTTTTTTK...",
+    "...KTWTTTWTtK...",
+    "...KTeTTTetTK...",
+    "...KTTpmmpTTK...",
+    "..KCCCCCCCCCCK..",
+    ".KCCCCCCCCCCCCK.",
+    "..KCCCCCCCCCCK..",
+    "..KTTTTTTTTTTK..",
+    "...KTtTTTTtTK...",
+    "...KTTtTTtTTK...",
 ]
 GIRL = dict(up=GIRL_UP, top=5, leg_top=19, legs_x=(5, 9),
-            leg_rows=['skin', 'white', 'white', 'black', 'black'], eye_row=10, eyes=(6, 9), mouth_row=11,
-            legend={**BASE, 'N': 'navy', 'n': 'slate'}, bowl_row=16)
+            leg_rows=['tan', 'tan', 'brown', 'brown', 'brown_dk'], eye_row=11, eyes=(5, 9), mouth_row=12,
+            legend={**BASE, 'T': 'tan', 't': 'brown', 'b': 'brown_dk', 'C': 'cream', 'p': 'pink'},
+            bowl_row=16, face_col='tan')
 
-# ---------------------------------------------------------------- 체육선생님
+# ---------------------------------------------------------------- teacher = 고라파덕 (Psyduck)
 TEACH_UP = [  # rows 3..16
-    "....KKKKKKKK....",
-    "...KhhhhhhhhK...",
-    "...KhhhhhhhhK...",
-    "...KhsssssshK...",
-    "...KsKKKKKKsK...",
-    "...KssssssssK...",
-    "...KsMMMMMMsK...",
-    "....KSSSSSSK....",
-    "..KWTTTsZTTTWK..",
-    "..KWTTyTZTTTWK..",
-    "..KWTTTTZTTTWK..",
-    "..KWtTTTZTTtWK..",
-    "..KsTTTTZTTTsK..",
-    "...KttttttttK...",
+    "......KKKK......",
+    "....KKYYYYKK....",
+    "...KYYYYYYYYK...",
+    "...KYYYYYYYYK...",
+    "..KYYWWYYWWYYK..",
+    "..KYYWeYYeWYYK..",
+    "..KYYCCCCCCYYK..",
+    "..KYYCmmmmCYYK..",
+    "...KYYCCCCYYK...",
+    "..KYYYYYYYYYYK..",
+    ".KYYYYYYYYYYYYK.",
+    ".KYYYYyYYyYYYYK.",
+    "..KYYYYYYYYYYK..",
+    "...KyyyyyyyyK...",
 ]
 TEACH = dict(up=TEACH_UP, top=3, leg_top=17, legs_x=(4, 9), leg_w=3,
-             leg_rows=['T', 'T', 'T', 'T', 'T', 'white', 'white'], eye_row=7, eyes=(6, 9), mouth_row=9,
-             legend={**BASE, 'M': 'plum_dk', 'T': 'blue_dk', 't': 'navy', 'y': 'gold', 'Z': 'gray_lt'},
-             bowl_row=15, stripe=True)
+             leg_rows=['Y', 'Y', 'Y', 'Y', 'Y', 'cream', 'tan'], eye_row=8, eyes=(6, 9), mouth_row=10,
+             legend={**BASE, 'Y': 'yellow', 'y': 'gold', 'C': 'cream'},
+             bowl_row=15, face_col='yellow')
 
-# ---------------------------------------------------------------- 여고생 (히든 스테이지: 여고생 군단)
+# ---------------------------------------------------------------- hsgirl = 님피아 (Sylveon)
 HS_UP = [  # rows 4..17
-    ".....KKKKKK.....",
-    "....KbbbbbbK.RR.",
-    "...KbbbbbbbbKRK.",
-    "...KbbbbbbbbbK..",
-    "...KbsssssbbbK..",
-    "...KbsessesbK...",
-    "...KbssmmssbK...",
-    "....KSSSSSSK....",
-    "..KNNWRRRRWNNK..",
-    "..KNNWWRRWWNNK..",
-    "..KNNNWWWWNNNK..",
-    "..KsNNNNNNNNsK..",
-    "...KCcCcCcCcK...",
-    "..KCcCcCcCcCcK..",
+    "..KKK......KKK..",
+    ".KPKBP....PBKPK.",
+    ".KPPPKKKKKKPPPK.",
+    "..KWRRPPPPPPPK..",
+    "...KPPPPPPPPK...",
+    "...KCCCCCCCCK...",
+    "...KCeCCCCeCK...",
+    "...KCCpmmpCCK...",
+    "..KWWWRRRRWWWK..",
+    "..KCCBWWWWBCCK..",
+    "..KCCCCCCCCCCK..",
+    "..KCCCCCCCCCCK..",
+    "...KCCCCCCCCK...",
+    "...KPPCCCCPPK...",
 ]
 HSGIRL = dict(up=HS_UP, top=4, leg_top=18, legs_x=(5, 9),
-              leg_rows=['skin', 'skin', 'white', 'white', 'black'], eye_row=9, eyes=(6, 9), mouth_row=10,
-              legend={**BASE, 'b': 'brown_dk', 'N': 'navy', 'C': 'slate', 'c': 'red_dk'}, bowl_row=15)
+              leg_rows=['cream', 'cream', 'pink', 'pink', 'pink_hot'], eye_row=10, eyes=(5, 10), mouth_row=11,
+              legend={**BASE, 'P': 'pink', 'B': 'blue', 'C': 'cream', 'p': 'pink_hot', 'R': 'pink_hot'},
+              bowl_row=15, face_col='cream')
 
-# ---------------------------------------------------------------- 유도부원 (히든 스테이지: 유도부 강습)
+# ---------------------------------------------------------------- judo = 잠만보 (Snorlax)
 JUDO_UP = [  # rows 3..16
-    "....KKKKKKKK....",
-    "...KhhhhhhhhK...",
-    "...KssssssssK...",
-    "...KsKKssKKsK...",
-    "...KssessessK...",
-    "...KsssmmsssK...",
-    "....KSSSSSSK....",
-    ".KWWWgWssWgWWWK.",
-    ".KWWWWgWWgWWWWK.",
-    ".KWWWWWgWWWWWWK.",
-    ".KsWWWWWWWWWWsK.",
-    "..KBBBBBBBBBBK..",
-    "..KWWWWBBWWWWK..",
-    "..KWWWWBWBWWWK..",
+    "..KKK......KKK..",
+    ".KTTKKKKKKKKTTK.",
+    ".KTTTCCCCCCCTTK.",
+    "..KCCCCCCCCCCK..",
+    "..KCeeCCCCeeCK..",
+    "..KCCCCCCCCCCK..",
+    "..KCCCmmmmCCCK..",
+    ".KTTTTCCCCCTKTK.",
+    ".KTTCCCCCCCCCTK.",
+    ".KTCCCCCCCCCCCK.",
+    ".KTCCCCCCCCCCCK.",
+    "..KTCCCCCCCCCTK.",
+    "..KTTCCCCCCCTTK.",
+    "..KTTTTTTTTTTK..",
 ]
 JUDO = dict(up=JUDO_UP, top=3, leg_top=17, legs_x=(4, 9), leg_w=3,
-            leg_rows=['white', 'white', 'white', 'white', 'skin', 'skin', 'skin'], eye_row=7, eyes=(6, 9), mouth_row=8,
-            legend={**BASE, 'W': 'white', 'g': 'gray_lt', 'B': 'black'}, bowl_row=15)
+            leg_rows=['teal_dk', 'teal_dk', 'teal_dk', 'teal_dk', 'cream', 'cream', 'tan'], eye_row=7, eyes=(5, 10), mouth_row=9,
+            legend={**BASE, 'T': 'teal_dk', 'C': 'cream'}, bowl_row=15, face_col='cream')
 
 HEART = ["RR.RR", "RWRRR", ".RRR.", "..R.."]
 ANGER = [".R.R.", "RR.RR", ".....", "RR.RR", ".R.R."]
@@ -134,7 +136,7 @@ for spec in (KID, GIRL, TEACH, HSGIRL, JUDO):
 def legs(c: Canvas, spec, lift_l=0, lift_r=0):
     rows = spec['leg_rows']
     top = spec['leg_top']
-    leg_color = {'T': 'blue_dk'}
+    leg_color = {'T': 'teal_dk', 'Y': 'yellow'}
     for side, (x, lift) in enumerate(zip(spec['legs_x'], (lift_l, lift_r))):
         for j, col in enumerate(rows):
             y = top + j - lift
@@ -142,10 +144,8 @@ def legs(c: Canvas, spec, lift_l=0, lift_r=0):
             lw = spec.get('leg_w', 2)
             for dx in range(lw):
                 c.px(x + dx, y, col)
-            if spec.get('stripe') and j < len(rows) - 2:
-                c.px(x if side == 0 else x + lw - 1, y, 'white')
             c.px(x - 1, y, 'black'); c.px(x + lw, y, 'black')
-        # 신발 앞코
+        # 발 앞코
         c.px(x - 1 if side == 0 else x + lw, top + len(rows) - 1 - lift, leg_color.get(rows[-1], rows[-1]))
 
 
@@ -166,12 +166,13 @@ def human(spec, pose: str, k: int) -> Canvas:
         lift_l, lift_r = [(1, 0), (0, 1)][k]
 
     ey, (ex1, ex2), my = spec['eye_row'], spec['eyes'], spec['mouth_row']
+    fc = spec.get('face_col', 'skin')
     if pose == 'eat':
         # 행복한 눈(^^) + 볼터치 + 그릇
         for ex in (ex1, ex2):
-            body.px(ex, ey, 'skin'); body.px(ex, ey - 1 if spec is not TEACH else ey, 'black')
+            body.px(ex, ey, fc); body.px(ex, ey - 1 if spec is not TEACH else ey, 'black')
         body.px(ex1 - 1, ey + 1, 'pink'); body.px(ex2 + 1, ey + 1, 'pink')
-        body.px(7, my, 'red_dk' if k == 0 else 'brown_dk'); body.px(8, my, 'red_dk' if k == 0 else 'skin')
+        body.px(7, my, 'red_dk' if k == 0 else 'brown_dk'); body.px(8, my, 'red_dk' if k == 0 else fc)
         br = spec['bowl_row']
         body.hline(5, 10, br, 'red'); body.hline(6, 9, br + 1, 'red_dk')
         body.hline(6, 9, br - 1, 'cream')
@@ -187,7 +188,6 @@ def human(spec, pose: str, k: int) -> Canvas:
             body.px(6, my, 'black'); body.px(9, my, 'black')
     legs(c, spec, lift_l, lift_r)
     c.paste(body.shifted(0, bob))
-    c.outline('black') if False else None
 
     if pose == 'eat':
         hy = 0 if k == 1 else 1
@@ -199,17 +199,16 @@ def human(spec, pose: str, k: int) -> Canvas:
     return c
 
 
-# ---------------------------------------------------------------- 도둑고양이
+# ---------------------------------------------------------------- cat = 로켓단 나옹 (Meowth)
 CAT_HEAD = [
     ".KK..KK.",
-    ".KoKKoK.",
-    "KOOOOOOK",
-    "KOgOOgOK",
-    "KOOcpcOK",
+    ".KbYYbK.",
+    "KccYYccK",
+    "KcKccKcK",
+    "KcccpcCK",
     ".KccccK.",
 ]
-CAT_LEG = {'O': 'orange', 'o': 'rust', 'c': 'cream', 'g': 'green', 'p': 'pink', 'K': 'black',
-           'k': 'black', 'f': 'gray_lt', 'W': 'white'}
+CAT_LEG = {'c': 'cream', 'C': 'tan', 'b': 'brown_dk', 'Y': 'gold', 'p': 'pink', 'K': 'black'}
 
 
 def cat(pose: str, k: int) -> Canvas:
@@ -217,22 +216,16 @@ def cat(pose: str, k: int) -> Canvas:
     arched = pose == 'flee'
     by = 17 if not arched else 15   # 몸통 윗줄
     hx, hy = 0, 13
-    if pose == 'idle' and k == 1:
-        hy += 0
-    # 몸통 (x 3..13)
+    # 나옹 몸통 (크림색 + 갈색 발/꼬리 끝)
     for y in range(by, by + 4):
         for x in range(3, 14):
-            col = 'orange'
+            col = 'cream'
             if y == by + 3 and 4 <= x <= 11:
-                col = 'cream'
-            if (x % 3 == 0) and y < by + 2:
-                col = 'rust'
+                col = 'tan'
             c.px(x, y, col)
     if arched:
-        c.hline(5, 11, by - 1, 'orange'); c.hline(7, 9, by - 2, 'orange')
-        for x in (5, 7, 9, 11):
-            c.px(x, by - 2 if 7 <= x <= 9 else by - 1, 'rust')
-    # 다리
+        c.hline(5, 11, by - 1, 'cream'); c.hline(7, 9, by - 2, 'cream')
+    # 다리 (갈색 발끝)
     leg_y0 = by + 4
     poses = {
         'walk': [((4, 0), (6, 1), (10, 1), (12, 0)), ((4, 1), (6, 0), (10, 0), (12, 1)),
@@ -241,34 +234,33 @@ def cat(pose: str, k: int) -> Canvas:
     leg_set = poses['walk'][k] if pose == 'walk' else ((4, 0), (6, 0), (10, 0), (12, 0))
     for (lx, lift) in leg_set:
         for y in range(leg_y0, 23 - lift):
-            c.px(lx, y, 'orange')
-        c.px(lx, 23 - lift, 'cream')
-    # 꼬리
+            c.px(lx, y, 'cream')
+        c.px(lx, 23 - lift, 'brown_dk')
+    # 말린 꼬리 (끝부분 갈색)
     sway = [0, 1][k % 2] if pose in ('idle', 'walk') else 0
     if arched:
-        c.vline(14, by - 5, by + 1, 'orange'); c.px(14, by - 6, 'rust'); c.px(15, by - 6, 'orange')
-        c.px(13, by - 5, 'orange'); c.px(15, by - 4, 'orange')  # 털 바짝
+        c.vline(14, by - 5, by + 1, 'cream'); c.px(14, by - 6, 'brown_dk'); c.px(15, by - 6, 'brown')
+        c.px(13, by - 5, 'brown'); c.px(15, by - 4, 'brown')
     else:
-        c.px(14, by + 1, 'orange'); c.px(14, by, 'orange')
-        c.vline(15 - sway, by - 4, by - 1, 'orange')
-        c.px(15 - sway, by - 5, 'rust')
-    # 머리
+        c.px(14, by + 1, 'cream'); c.px(14, by, 'cream')
+        c.vline(15 - sway, by - 4, by - 1, 'cream')
+        c.px(15 - sway, by - 5, 'brown_dk'); c.px(14 - sway, by - 5, 'brown')
+    # 머리 (이마에 금화 부적)
     hy = by - 4 - (1 if arched else 0)
     c.grid(hx, hy, CAT_HEAD, CAT_LEG)
+    c.px(3, hy + 1, 'yellow')  # 금화 하이라이트
     if pose == 'steal':
-        # 입에 문 생선
+        # 입에 문 오랭열매/보따리 + 반짝이
         fy = hy + 5
-        c.hline(0, 3, fy, 'gray_lt'); c.px(0, fy - 1, 'gray'); c.px(0, fy + 1, 'gray')
-        c.px(3, fy, 'gray'); c.px(4, fy, 'gray_lt')
-        c.px(4 + k, hy - 2, 'yellow'); c.px(4 + k, hy - 4, 'yellow')  # 반짝
+        c.hline(0, 2, fy, 'blue'); c.px(1, fy - 1, 'cyan'); c.px(1, fy + 1, 'blue_dk')
+        c.px(4 + k, hy - 2, 'yellow'); c.px(4 + k, hy - 4, 'yellow')
     if pose == 'flee':
-        # 쉭! 하악질 - 눈 세모, 입 벌림, 느낌표
+        # 쉭! 화들짝 - 눈 땡그랗게, 입 벌림, 느낌표
         c.px(2, hy + 3, 'yellow'); c.px(5, hy + 3, 'yellow')
         c.px(3, hy + 4, 'red_dk'); c.px(4, hy + 4, 'red_dk')
         ex = 7 + k
         c.vline(ex, 0 + k, 3 + k, 'red'); c.px(ex, 5 + k, 'red')
     out = c.copy()
-    # 몸 외곽선 (머리 grid는 자체 외곽선)
     sil = Canvas(W, H)
     sil.paste(c)
     sil.outline('black')

@@ -149,7 +149,7 @@ export function showReceipt(scene: Phaser.Scene, cfg: DayConfig, stats: DayStats
     for (let xx = 8; xx < w - 8; xx += 4) d.fillRect(xx, yy, 2, 1);
     paper.add(d);
   };
-  paper.add(txt(scene, w / 2, 7, '보글보글 분식', { font: FONT.bold, size: 12, color: CSS.black }).setOrigin(0.5, 0));
+  paper.add(txt(scene, w / 2, 7, '보글보글 열매포차', { font: FONT.bold, size: 12, color: CSS.black }).setOrigin(0.5, 0));
   paper.add(txt(scene, w / 2, 22, `${cfg.label} 영업 정산서`, { font: FONT.small, size: 8, color: CSS.gray }).setOrigin(0.5, 0));
   dash(33);
   let yy = 38;

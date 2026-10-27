@@ -1,7 +1,7 @@
-"""shop_bg — 240x128 분식집 내부 (손님 카운터). 게임에서는 y=32에 놓인다.
+"""shop_bg — 240x128 포켓몬 열매 포차 내부 (손님 카운터). 게임에서는 y=32에 놓인다.
 
-  y  0..60   타일 벽 (위쪽은 주문 카드에 대부분 가려짐) + 시계·달력·메뉴판
-  y 60..96   손님이 서는 영역 뒤 선반 (CRT TV, 라면 봉지, 양념통, 선풍기)
+  y  0..60   타일 벽 (위쪽은 주문 카드에 대부분 가려짐) + 몬스터볼 시계·달력·열매 메뉴판
+  y 60..96   손님이 서는 영역 뒤 선반 + 조리모를 쓴 피카츄 요리사
   y 96..128  나무 카운터 (상판 + 앞판). 게임에서 이 띠는 손님 위로 한 번 더 그린다.
 """
 import random
@@ -13,7 +13,7 @@ R = random.Random(11)
 
 
 def wall(c: Canvas):
-    # 아이보리 타일 + 하단 민트 타일 띠 (90년대 분식집 벽)
+    # 아이보리 타일 + 하단 민트 타일 띠
     for y in range(0, 72):
         for x in range(W):
             col = 'cream'
@@ -30,11 +30,16 @@ def wall(c: Canvas):
 
 
 def clock(c: Canvas, cx, cy):
+    """몬스터볼 모양 벽시계"""
     c.ellipse(cx, cy, 7, 7, 'white')
-    c.ellipse(cx, cy, 7, 7, 'brown_dk', fill=False)
-    c.vline(int(cx), int(cy) - 5, int(cy), 'black'); c.line(int(cx), int(cy), int(cx) + 3, int(cy) + 2, 'red')
-    for a in ((0, -6), (6, 0), (0, 6), (-6, 0)):
-        c.px(int(cx) + a[0], int(cy) + a[1], 'slate')
+    for y in range(int(cy) - 7, int(cy) + 1):
+        for x in range(int(cx) - 7, int(cx) + 8):
+            if (x - cx) ** 2 + (y - cy) ** 2 <= 49:
+                c.px(x, y, 'red')
+    c.hline(int(cx) - 7, int(cx) + 7, int(cy), 'black')
+    c.ellipse(cx, cy, 7, 7, 'black', fill=False)
+    c.ellipse(cx, cy, 2, 2, 'white'); c.ellipse(cx, cy, 2, 2, 'black', fill=False)
+    c.vline(int(cx), int(cy) - 5, int(cy), 'yellow'); c.line(int(cx), int(cy), int(cx) + 3, int(cy) + 2, 'yellow')
 
 
 def calendar(c: Canvas, x, y):
@@ -44,7 +49,6 @@ def calendar(c: Canvas, x, y):
     for j in range(3):
         for i in range(4):
             c.px(x + 2 + i * 4, y + 8 + j * 4, 'slate' if (i + j) % 5 else 'red')
-    c.outline('brown_dk') if False else None
 
 
 def menu_board(c: Canvas, x, y, w):
@@ -68,32 +72,39 @@ def shelf(c: Canvas):
         c.line(x, y + 4, x + 4, y + 8, 'brown_dk')
 
 
-def crt_tv(c: Canvas, x, y):
-    c.rect(x, y, 26, 20, 'gray')
-    c.rect(x, y, 26, 1, 'gray_lt')
-    c.rect(x + 2, y + 2, 17, 14, 'navy')
-    c.rect(x + 3, y + 3, 15, 12, 'blue_dk')
-    c.hline(x + 4, x + 10, y + 5, 'cyan')                 # 화면 반사
-    c.rect(x + 6, y + 9, 8, 4, 'green')                   # 만화 장면
-    c.px(x + 8, y + 8, 'yellow')
-    for k in range(3):
-        c.px(x + 21, y + 4 + k * 4, 'black'); c.px(x + 22, y + 4 + k * 4, 'gray_dk')
-    c.rect(x + 4, y + 20, 18, 2, 'slate')
-    c.line(x + 9, y, x + 5, y - 6, 'gray_dk'); c.line(x + 15, y, x + 20, y - 7, 'gray_dk')  # 안테나
+def pikachu_chef_badge(c: Canvas, x, y):
+    """벽면에 걸린 조리모 쓴 피카츄 요리사 액자"""
+    c.rect(x, y, 22, 28, 'brown')
+    c.rect(x + 1, y + 1, 20, 26, 'gold')
+    c.rect(x + 2, y + 2, 18, 24, 'blue_dk')
+    # 귀
+    c.line(x + 6, y + 13, x + 4, y + 8, 'yellow'); c.px(x + 4, y + 8, 'black')
+    c.line(x + 15, y + 13, x + 17, y + 8, 'yellow'); c.px(x + 17, y + 8, 'black')
+    # 하얀 조리모
+    c.ellipse(x + 10.5, y + 7, 4.5, 3, 'white')
+    c.rect(x + 7, y + 9, 8, 2, 'gray_lt'); c.hline(x + 7, x + 14, y + 10, 'red')
+    # 피카츄 얼굴 + 빨간 볼
+    c.ellipse(x + 10.5, y + 15, 5, 4.5, 'yellow')
+    c.px(x + 8, y + 14, 'black'); c.px(x + 13, y + 14, 'black')
+    c.px(x + 7, y + 16, 'red'); c.px(x + 14, y + 16, 'red')
+    c.hline(x + 9, x + 12, y + 16, 'red_dk')
+    # 빨간 스카프
+    c.rect(x + 6, y + 20, 10, 4, 'red'); c.rect(x + 8, y + 22, 6, 3, 'white')
 
 
 def radio(c: Canvas, x, y):
-    """카세트 라디오 (선반 위)"""
-    c.rect(x, y + 4, 22, 12, 'gray')
-    c.rect(x, y + 4, 22, 1, 'gray_lt')
-    c.ellipse(x + 5, y + 10, 3, 3, 'slate'); c.ellipse(x + 5, y + 10, 1, 1, 'gray_dk')
-    c.ellipse(x + 16, y + 10, 3, 3, 'slate'); c.ellipse(x + 16, y + 10, 1, 1, 'gray_dk')
-    c.rect(x + 9, y + 7, 4, 3, 'navy'); c.px(x + 10, y + 8, 'orange')
+    """몬스터볼 라디오 (선반 위)"""
+    c.rect(x, y + 4, 22, 12, 'red')
+    c.rect(x, y + 10, 22, 6, 'white')
+    c.hline(x, x + 21, y + 10, 'black')
+    c.ellipse(x + 5, y + 10, 3, 3, 'slate'); c.ellipse(x + 5, y + 10, 1, 1, 'white')
+    c.ellipse(x + 16, y + 10, 3, 3, 'slate'); c.ellipse(x + 16, y + 10, 1, 1, 'white')
+    c.rect(x + 9, y + 7, 4, 3, 'navy'); c.px(x + 10, y + 8, 'yellow')
     c.line(x + 3, y + 4, x + 8, y, 'gray_dk'); c.hline(x + 8, x + 14, y, 'gray_dk'); c.line(x + 14, y, x + 19, y + 4, 'gray_dk')
 
 
 def ramen_packs(c: Canvas, x, y, n):
-    cols = [('red', 'yellow'), ('orange', 'red_dk'), ('red', 'white'), ('blue', 'yellow')]
+    cols = [('red', 'yellow'), ('pink_hot', 'white'), ('blue', 'cyan'), ('gold', 'red')]
     for i in range(n):
         a, b = cols[i % len(cols)]
         px = x + i * 9
@@ -102,11 +113,12 @@ def ramen_packs(c: Canvas, x, y, n):
         c.vline(px, y, y + 9, 'red_dk' if a == 'red' else 'brown_dk')
 
 
-def bottles(c: Canvas, x, y):
-    for i, col in enumerate(('red', 'green_dk', 'brown', 'gold')):
+def berry_jars(c: Canvas, x, y):
+    """선반 위 열매 병 (모몬·오랭·자뭉·체리)"""
+    for i, col in enumerate(('pink', 'blue', 'gold', 'red')):
         px = x + i * 6
         c.rect(px, y + 3, 4, 8, col)
-        c.rect(px + 1, y, 2, 3, 'white' if col != 'gold' else 'red')
+        c.rect(px + 1, y, 2, 3, 'green')
         c.px(px + 1, y + 5, 'white')
 
 
@@ -115,14 +127,14 @@ def fan(c: Canvas, x, y):
     c.ellipse(x, y, 8, 8, 'gray', fill=False)
     for k in range(-6, 7, 3):
         c.line(x - 7, y + k, x + 7, y + k, 'gray')
-    c.ellipse(x, y, 2, 2, 'blue')
-    c.vline(x, y + 8, y + 14, 'gray_dk'); c.rect(x - 4, y + 15, 9, 2, 'blue_dk')
+    c.ellipse(x, y, 2, 2, 'yellow')
+    c.vline(x, y + 8, y + 14, 'gray_dk'); c.rect(x - 4, y + 15, 9, 2, 'red')
 
 
 def poster(c: Canvas, x, y):
     c.rect(x, y, 22, 28, 'yellow')
     c.rect(x + 2, y + 2, 18, 12, 'orange')
-    c.ellipse(x + 11, y + 9, 5, 3, 'red')
+    c.ellipse(x + 11, y + 9, 5, 3, 'pink_hot')
     c.hline(x + 6, x + 16, y + 8, 'cream')
     for k in range(3):
         c.hline(x + 3, x + 18 - k * 3, y + 18 + k * 3, 'brown_dk')
@@ -156,12 +168,12 @@ def build():
     clock(c, 30, 12)
     calendar(c, 206, 4)
     menu_board(c, 84, 4, 72)
-    poster(c, 168, 30)
+    pikachu_chef_badge(c, 168, 30)
     poster(c, 46, 32)
     shelf(c)
     radio(c, 8, 46)
     ramen_packs(c, 98, 52, 5)
-    bottles(c, 150, 51)
+    berry_jars(c, 150, 51)
     fan(c, 222, 46)
     counter(c)
     return c

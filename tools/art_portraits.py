@@ -1,9 +1,9 @@
 """portraits — 32x32 스토리 대화창 초상화 (말할 때 입 2프레임)
 
-  por_me       나 (할머니 가게를 맡은 손주, 빨간 두건 + 앞치마)
-  por_grandma  할머니 (쪽진 회색 머리, 동그란 안경, 보라 카디건)
-  por_hsgirl   여고생 반장 (갈색 포니테일 + 빨간 리본, 남색 교복)
-  por_judo     유도부 주장 (짧은 머리, 굵은 눈썹, 흰 도복)
+  por_me       조리모를 쓴 피카츄 (새 사장 요리사)
+  por_grandma  오박사 (흰 연구 가운, 회색 머리)
+  por_hsgirl   님피아 (분홍 귀, 리본 더듬이)
+  por_judo     잠만보 (청록 몸통, 크림 얼굴, 실눈)
 """
 from pixel import Canvas
 
@@ -17,22 +17,6 @@ def _frame_bg(c: Canvas, col: str):
             c.px(x, y, 'white' if col in ('yellow', 'cream') else 'slate')
 
 
-def _face(c: Canvas, cx=15.5, cy=15, rx=8, ry=9):
-    c.ellipse(cx, cy, rx, ry, 'skin')
-    c.ellipse(cx + 3, cy + 2, rx - 4, ry - 3, 'skin')
-    c.vline(int(cx + rx), int(cy - 2), int(cy + 4), 'skin_dk')
-
-
-def _eyes(c: Canvas, y=15, xs=(12, 19), style='dot'):
-    for x in xs:
-        if style == 'dot':
-            c.rect(x, y, 2, 3, 'black'); c.px(x, y, 'white')
-        elif style == 'smile':
-            c.px(x - 1, y + 1, 'black'); c.px(x, y, 'black'); c.px(x + 1, y, 'black'); c.px(x + 2, y + 1, 'black')
-        elif style == 'fierce':
-            c.rect(x, y + 1, 2, 2, 'black'); c.px(x, y + 1, 'white')
-
-
 def _mouth(c: Canvas, k: int, y=21, x=15, color='red_dk'):
     if k == 0:
         c.hline(x - 1, x + 2, y, color)
@@ -41,84 +25,116 @@ def _mouth(c: Canvas, k: int, y=21, x=15, color='red_dk'):
 
 
 def me(k: int) -> Canvas:
+    """조리모를 쓴 피카츄 요리사"""
     c = Canvas(W, H)
     _frame_bg(c, 'gold')
-    # 몸: 흰 티 + 빨간 앞치마 끈
-    c.rect(5, 25, 22, 7, 'white'); c.rect(8, 25, 3, 7, 'red'); c.rect(21, 25, 3, 7, 'red')
-    c.rect(12, 28, 8, 4, 'red')
-    _face(c)
-    # 머리카락 (검정) + 빨간 두건
-    c.ellipse(15.5, 9, 9, 5, 'black')
-    c.rect(7, 7, 18, 4, 'red'); c.hline(7, 24, 7, 'pink')
-    c.rect(24, 9, 4, 2, 'red'); c.rect(26, 11, 2, 3, 'red_dk')          # 두건 매듭
-    c.px(10, 9, 'white'); c.px(16, 8, 'white')                            # 물방울 무늬
-    c.vline(7, 11, 16, 'black'); c.vline(24, 11, 15, 'black')
-    _eyes(c)
-    c.px(10, 19, 'pink'); c.px(21, 19, 'pink')
-    _mouth(c, k)
+    # 몸통: 노란 피카츄 + 빨간 스카프/앞치마
+    c.rect(6, 25, 20, 7, 'yellow')
+    c.rect(8, 25, 16, 4, 'red'); c.hline(9, 22, 25, 'pink')
+    c.rect(12, 28, 8, 4, 'white')  # 앞치마
+    # 피카츄 귀 (양옆 위로 뻗음 + 검은 끝)
+    c.line(7, 13, 2, 3, 'yellow'); c.line(8, 13, 3, 3, 'yellow'); c.line(9, 13, 4, 4, 'gold')
+    c.line(2, 3, 4, 6, 'black'); c.line(3, 3, 5, 6, 'black')
+    c.line(24, 13, 29, 3, 'yellow'); c.line(23, 13, 28, 3, 'yellow'); c.line(22, 13, 27, 4, 'gold')
+    c.line(29, 3, 27, 6, 'black'); c.line(28, 3, 26, 6, 'black')
+    # 얼굴 (통통한 노란 볼)
+    c.ellipse(15.5, 17, 9, 8, 'yellow')
+    c.ellipse(15.5, 19, 9.5, 5.5, 'yellow')
+    c.vline(24, 15, 22, 'gold')
+    # 하얀 조리모 (머리 위)
+    c.ellipse(15.5, 6, 7.5, 4.5, 'white')
+    c.ellipse(11, 6, 3.5, 3, 'white'); c.ellipse(20, 6, 3.5, 3, 'white')
+    c.rect(9, 8, 14, 3, 'gray_lt'); c.hline(9, 22, 8, 'white'); c.hline(9, 22, 10, 'red')
+    c.vline(13, 4, 7, 'gray_lt'); c.vline(18, 4, 7, 'gray_lt')
+    # 눈 + 코 + 빨간 전기 볼
+    for x in (11, 19):
+        c.rect(x, 15, 3, 3, 'black'); c.px(x, 15, 'white')
+    c.px(15, 18, 'black'); c.px(16, 18, 'black')
+    c.ellipse(8.5, 20, 2.2, 2, 'red'); c.px(8, 19, 'pink')
+    c.ellipse(22.5, 20, 2.2, 2, 'red'); c.px(22, 19, 'pink')
+    _mouth(c, k, y=21, x=15)
     c.outline('black')
     return c
 
 
 def grandma(k: int) -> Canvas:
+    """오박사 (흰 연구 가운 + 붉은 셔츠 + 회색 덥수룩 머리)"""
     c = Canvas(W, H)
     _frame_bg(c, 'cream')
-    c.rect(5, 25, 22, 7, 'purple_dk'); c.rect(14, 25, 4, 7, 'magenta')    # 보라 카디건
-    c.px(15, 27, 'white'); c.px(15, 30, 'white')
-    _face(c)
-    # 쪽진 회색 머리
-    c.ellipse(15.5, 9, 9, 6, 'gray_lt')
-    c.ellipse(15.5, 3, 4, 3, 'gray_lt'); c.hline(12, 19, 4, 'gray')     # 쪽
-    c.line(19, 1, 23, 4, 'gold')                                           # 비녀
-    c.vline(7, 10, 17, 'gray_lt'); c.vline(24, 10, 17, 'gray_lt')
-    c.hline(10, 21, 11, 'gray')
-    # 동그란 안경 + 웃는 눈
+    # 흰 연구 가운 + 안쪽 주황/빨강 셔츠
+    c.rect(4, 24, 24, 8, 'white')
+    c.rect(12, 24, 8, 8, 'orange_dk'); c.rect(13, 25, 6, 7, 'rust')
+    c.line(10, 24, 12, 31, 'gray_lt'); c.line(21, 24, 19, 31, 'gray_lt')
+    # 얼굴
+    c.ellipse(15.5, 15, 8, 9, 'skin')
+    c.vline(23, 13, 20, 'skin_dk')
+    # 오박사 특유의 회색/갈색 뾰족 머리
+    c.ellipse(15.5, 8, 9, 5, 'gray')
+    for sx in (8, 12, 16, 20):
+        c.line(sx, 5, sx + 1, 2, 'gray'); c.px(sx + 1, 3, 'gray_lt')
+    c.vline(7, 9, 16, 'gray'); c.vline(24, 9, 16, 'gray')
+    c.hline(10, 21, 10, 'gray_dk')
+    # 짙은 눈썹 + 인자한 눈
+    c.rect(10, 12, 4, 2, 'gray_dk'); c.rect(18, 12, 4, 2, 'gray_dk')
     for x in (11, 18):
-        c.ellipse(x + 1.5, 15.5, 3, 2.6, 'gold', fill=False)
-    c.hline(15, 16, 15, 'gold')
-    _eyes(c, y=15, xs=(12, 19), style='smile')
-    c.px(9, 20, 'pink'); c.px(22, 20, 'pink')
-    c.px(10, 22, 'skin_dk'); c.px(21, 22, 'skin_dk')                        # 주름
-    _mouth(c, k, y=22)
+        c.rect(x, 15, 2, 2, 'black'); c.px(x, 15, 'white')
+    c.px(15, 17, 'skin_dk'); c.px(16, 18, 'skin_dk')
+    _mouth(c, k, y=21, x=15)
     c.outline('black')
     return c
 
 
 def hsgirl(k: int) -> Canvas:
+    """님피아 (분홍/크림 얼굴, 큰 귀, 리본 보우와 더듬이)"""
     c = Canvas(W, H)
     _frame_bg(c, 'pink')
-    c.rect(5, 25, 22, 7, 'navy'); c.rect(12, 25, 8, 3, 'white')
-    c.rect(14, 26, 4, 3, 'red'); c.px(13, 28, 'red'); c.px(18, 28, 'red')  # 리본 넥타이
-    _face(c)
-    c.ellipse(15.5, 9, 9.5, 6, 'brown_dk')
-    c.vline(6, 9, 22, 'brown_dk'); c.vline(7, 9, 20, 'brown_dk')
-    c.vline(24, 9, 18, 'brown_dk'); c.vline(25, 9, 22, 'brown_dk')
-    c.rect(24, 4, 5, 3, 'red'); c.rect(28, 7, 2, 10, 'brown_dk')         # 리본 + 포니테일
-    c.hline(10, 14, 11, 'brown'); c.px(9, 12, 'brown_dk')                  # 앞머리
-    _eyes(c)
-    c.px(11, 14, 'black'); c.px(21, 14, 'black')                            # 속눈썹
-    c.px(10, 19, 'pink_hot'); c.px(21, 19, 'pink_hot')
-    _mouth(c, k, color='red')
+    # 목 주변 크림 털 + 목 리본 보우
+    c.rect(6, 25, 20, 7, 'cream')
+    c.rect(11, 25, 10, 5, 'white')
+    c.rect(9, 26, 4, 3, 'pink'); c.rect(19, 26, 4, 3, 'pink')
+    c.rect(14, 26, 4, 3, 'blue'); c.px(15, 27, 'cyan')
+    # 양쪽 큰 귀 (분홍 + 파랑 안쪽)
+    c.ellipse(6, 8, 3, 6, 'pink'); c.ellipse(6, 8, 1.5, 4, 'blue')
+    c.ellipse(25, 8, 3, 6, 'pink'); c.ellipse(25, 8, 1.5, 4, 'blue')
+    # 얼굴 (크림 아랫부분 + 분홍 윗머리)
+    c.ellipse(15.5, 16, 8.5, 8, 'cream')
+    c.ellipse(15.5, 11, 8.5, 4.5, 'pink')
+    c.hline(9, 22, 13, 'pink')
+    # 왼쪽 귀 밑 리본 보우 + 날리는 리본 더듬이
+    c.rect(5, 11, 6, 3, 'white'); c.rect(7, 11, 2, 3, 'pink_hot')
+    c.line(23, 12, 29, 9, 'white'); c.px(29, 9, 'blue'); c.px(28, 10, 'pink')
+    # 푸른 눈 + 속눈썹
+    for x in (11, 19):
+        c.rect(x, 15, 3, 3, 'blue_dk'); c.px(x + 1, 16, 'cyan'); c.px(x, 15, 'white')
+    c.px(10, 14, 'black'); c.px(22, 14, 'black')
+    c.px(9, 19, 'pink'); c.px(22, 19, 'pink')
+    _mouth(c, k, y=21, x=15, color='pink_hot')
     c.outline('black')
     return c
 
 
 def judo(k: int) -> Canvas:
+    """잠만보 (청록색 커다란 머리와 귀, 크림색 얼굴, 실눈과 송곳니)"""
     c = Canvas(W, H)
     _frame_bg(c, 'blue')
-    c.rect(4, 24, 24, 8, 'white')
-    c.line(11, 24, 16, 31, 'gray_lt'); c.line(21, 24, 16, 31, 'gray_lt')  # 도복 깃
-    c.rect(4, 30, 24, 2, 'black')                                         # 검은 띠
-    _face(c, rx=9)
-    c.ellipse(15.5, 8, 9, 4, 'plum_dk')
-    c.vline(6, 8, 12, 'plum_dk'); c.vline(25, 8, 12, 'plum_dk')
-    c.rect(10, 12, 5, 2, 'black'); c.rect(17, 12, 5, 2, 'black')          # 굵은 눈썹
-    _eyes(c, y=15, xs=(12, 19), style='fierce')
-    c.px(13, 19, 'skin_dk'); c.px(19, 19, 'skin_dk')
-    c.hline(9, 11, 24, 'skin_dk')                                          # 턱
-    _mouth(c, k, y=21, color='red_dk')
-    if k == 0:
-        c.px(23, 6, 'white'); c.px(24, 5, 'white')                          # 땀 반짝
+    # 큼직한 청록 어깨 + 크림 배
+    c.rect(2, 23, 28, 9, 'teal_dk')
+    c.ellipse(15.5, 29, 10, 5, 'cream')
+    # 뾰족한 청록 귀
+    c.ellipse(6, 7, 3.5, 4.5, 'teal_dk')
+    c.ellipse(25, 7, 3.5, 4.5, 'teal_dk')
+    # 둥글고 큰 청록 머리 + 크림 얼굴(이마 V자 경계)
+    c.ellipse(15.5, 15, 11, 9.5, 'teal_dk')
+    c.ellipse(15.5, 17, 9, 7.5, 'cream')
+    c.ellipse(15.5, 10, 4, 2.5, 'teal_dk')  # 이마 중앙 V자 내려옴
+    # 실눈 (ㅡ ㅡ)
+    c.hline(9, 13, 15, 'black'); c.hline(18, 22, 15, 'black')
+    c.px(9, 14, 'black'); c.px(22, 14, 'black')
+    # 볼 홍조
+    c.px(8, 18, 'tan'); c.px(23, 18, 'tan')
+    # 입 + 작은 아랫송곳니
+    _mouth(c, k, y=20, x=15, color='red_dk')
+    c.px(12, 19, 'white'); c.px(19, 19, 'white')
     c.outline('black')
     return c
 

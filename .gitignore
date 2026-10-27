@@ -1,8 +1,8 @@
 node_modules/
+.venv/
 dist/
 dist-single/
 dist-artifact/
-artifact/
 tools/out/
 tools/__pycache__/
 *.log

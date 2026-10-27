@@ -10,11 +10,11 @@ import { icon } from '../ui/Frames';
 import { bounce, drawBubble, txt } from '../ui/Juice';
 
 const ARRIVE_LINES: Record<PeepKind, string[]> = {
-  kid: ['배고파요!', '라면 주세요~', '떡볶이!'],
-  girl: ['한 그릇이요!', '빨리요~', '슬러시도!'],
-  teacher: ['든든하게!', '반숙으로!', '어이 사장!'],
-  hsgirl: ['시험 끝~!', '세트 주세요!', '치즈 듬뿍!'],
-  judo: ['두 그릇!!', '단백질!', '오스!'],
+  kid: ['꼬북꼬북!', '라면 주세요~', '포핀 떡볶이!'],
+  girl: ['이브이~!', '한 그릇이요!', '자뭉슬러시도!'],
+  teacher: ['고라파덕…', '모몬열매 톡!', '어이 피카츄!'],
+  hsgirl: ['님피아~!', '세트 주세요!', '튼튼치즈 듬뿍!'],
+  judo: ['두 그릇!!', '잠만보 배고파!', '쿠아앙!'],
 };
 
 export interface Customer {
